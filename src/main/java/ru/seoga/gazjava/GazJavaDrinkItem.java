@@ -6,7 +6,7 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.consume.UseAction;
+import net.minecraft.util.UseAction;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
@@ -16,9 +16,9 @@ import net.minecraft.util.Hand;
 
 public class GazJavaDrinkItem extends Item {
     private static final List<String> POSITIVE_EFFECTS = List.of(
-        "speed", "haste", "strength", "instant_health", "health_boost", "regeneration",
+        "speed", "haste", "strength", "health_boost", "regeneration",
         "resistance", "fire_resistance", "water_breathing", "invisibility", "night_vision",
-        "jump_boost", "absorption", "saturation", "luck", "slow_falling", "conduit_power",
+        "jump_boost", "absorption", "slow_falling", "conduit_power",
         "dolphins_grace", "hero_of_the_village"
     );
     private final int durationSeconds;
@@ -44,6 +44,8 @@ public class GazJavaDrinkItem extends Item {
                     user.addStatusEffect(new StatusEffectInstance(effect, ticks, 0, false, true, true))
                 );
             }
+            user.heal(8.0F);
+            if (user instanceof PlayerEntity player) player.getHungerManager().add(20, 1.0F);
         }
         if (user instanceof PlayerEntity player && !player.getAbilities().creativeMode) {
             stack.decrement(1);
